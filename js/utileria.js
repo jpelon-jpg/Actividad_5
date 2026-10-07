@@ -1,25 +1,3 @@
-/**
- * utileria.js
- * Librería de validaciones y utilidades en JavaScript puro (sin frameworks).
- * Se carga con: <script src="js/utileria.js"></script>
- *
- * Funciones obligatorias:
- *   validarCorreo, soloLetras, validarLongitud,
- *   calcularEdad, esMayorDeEdad, validarPassword
- * Funciones propias:
- *   capitalizarNombre, diasParaCumple
- */
-
-/* ---------- Helper interno (no forma parte de la API pública) ---------- */
-
-/**
- * Convierte una fecha a objeto Date a las 00:00 hora local.
- * Acepta un Date o un string "YYYY-MM-DD" (formato de <input type="date">).
- * Se evita new Date("YYYY-MM-DD") porque lo interpreta en UTC y puede
- * mostrar un día menos según la zona horaria.
- * @param {Date|string} fecha
- * @returns {Date|null} Date válido o null si la fecha no es válida.
- */
 function _parsearFecha(fecha) {
   if (fecha instanceof Date) {
     return isNaN(fecha.getTime())
@@ -43,48 +21,20 @@ function _parsearFecha(fecha) {
   return d;
 }
 
-/* ---------------------- FUNCIONES OBLIGATORIAS ---------------------- */
 
-/**
- * Valida el formato de un correo electrónico.
- * Requiere: usuario, "@", dominio y una extensión de al menos 2 letras.
- * @param {string} correo - Correo a validar.
- * @returns {boolean} true si el formato es válido.
- * @example
- * validarCorreo("ana@correo.com");  // true
- * validarCorreo("ana@correo");      // false
- */
 function validarCorreo(correo) {
   if (typeof correo !== "string") return false;
   var regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
   return regex.test(correo.trim());
 }
 
-/**
- * Verifica que el texto contenga solo letras (mayúsculas o minúsculas).
- * Acepta vocales acentuadas (á é í ó ú), además de ñ y ü.
- * No acepta espacios, números ni símbolos.
- * @param {string} texto - Texto a validar.
- * @returns {boolean} true si todos los caracteres son letras.
- * @example
- * soloLetras("María");   // true
- * soloLetras("Ana123");  // false
- */
+
 function soloLetras(texto) {
   if (typeof texto !== "string") return false;
   return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+$/.test(texto);
 }
 
-/**
- * Valida que un número no tenga más dígitos que el máximo permitido.
- * Solo cuenta números enteros; el signo negativo no cuenta como dígito.
- * @param {number|string} numero - Número a validar (también acepta string numérico).
- * @param {number} maxLongitud - Cantidad máxima de dígitos (entero positivo).
- * @returns {boolean} true si tiene entre 1 y maxLongitud dígitos.
- * @example
- * validarLongitud(5512345678, 10);  // true  (10 dígitos)
- * validarLongitud(123456, 4);       // false (6 dígitos)
- */
+
 function validarLongitud(numero, maxLongitud) {
   if (!Number.isInteger(maxLongitud) || maxLongitud < 1) return false;
   if (typeof numero !== "number" && typeof numero !== "string") return false;
@@ -96,15 +46,7 @@ function validarLongitud(numero, maxLongitud) {
   return digitos <= maxLongitud;
 }
 
-/**
- * Calcula la edad en años cumplidos a partir de la fecha de nacimiento.
- * @param {Date|string} fechaNacimiento - Date o string "YYYY-MM-DD".
- * @returns {number} Edad como entero. Devuelve -1 si la fecha no es válida
- *                   o está en el futuro.
- * @example
- * calcularEdad("2000-05-20");  // 26 (si hoy es 23/09/2026)
- * calcularEdad("2999-01-01");  // -1
- */
+
 function calcularEdad(fechaNacimiento) {
   var nacimiento = _parsearFecha(fechaNacimiento);
   if (!nacimiento) return -1;
@@ -122,28 +64,10 @@ function calcularEdad(fechaNacimiento) {
   return edad;
 }
 
-/**
- * Indica si la persona tiene 18 años o más.
- * @param {Date|string} fechaNacimiento - Date o string "YYYY-MM-DD".
- * @returns {boolean} true si es mayor de edad; false si es menor o la fecha es inválida.
- * @example
- * esMayorDeEdad("2000-05-20");  // true
- * esMayorDeEdad("2015-01-01");  // false
- */
 function esMayorDeEdad(fechaNacimiento) {
   return calcularEdad(fechaNacimiento) >= 18;
 }
 
-/**
- * Valida una contraseña segura. Debe tener:
- * mínimo 8 caracteres, una mayúscula, una minúscula, un número
- * y un carácter especial (cualquier símbolo que no sea letra ni número).
- * @param {string} password - Contraseña a validar.
- * @returns {boolean} true si cumple todos los requisitos.
- * @example
- * validarPassword("Segura#2026");  // true
- * validarPassword("password");     // false
- */
 function validarPassword(password) {
   if (typeof password !== "string") return false;
   return (
@@ -155,19 +79,6 @@ function validarPassword(password) {
   );
 }
 
-/* ---------------------------- SECCIÓN LIBRE ---------------------------- */
-
-/**
- * Da formato de nombre propio a un texto: quita espacios sobrantes,
- * pone la primera letra de cada palabra en mayúscula y deja en minúscula
- * las partículas "de", "del", "la", "las", "los", "y" (salvo al inicio).
- * Resuelve el problema de nombres capturados como "  jUAN pérez  ".
- * @param {string} texto - Nombre a formatear.
- * @returns {string} Nombre formateado. Devuelve "" si no es un string.
- * @example
- * capitalizarNombre("  mARÍA de LOS ángeles  ");  // "María de los Ángeles"
- * capitalizarNombre("juan pérez");                // "Juan Pérez"
- */
 function capitalizarNombre(texto) {
   if (typeof texto !== "string") return "";
   var particulas = ["de", "del", "la", "las", "los", "y"];
@@ -184,16 +95,6 @@ function capitalizarNombre(texto) {
     .join(" ");
 }
 
-/**
- * Calcula cuántos días faltan para el próximo cumpleaños.
- * Devuelve 0 si hoy es el cumpleaños. Quien nació un 29 de febrero
- * celebra el 1 de marzo en los años no bisiestos.
- * @param {Date|string} fechaNacimiento - Date o string "YYYY-MM-DD".
- * @returns {number} Días restantes (entero >= 0). Devuelve -1 si la fecha no es válida
- *                   o está en el futuro.
- * @example
- * diasParaCumple("2000-12-25");  // p. ej. 93 (si hoy es 23/09/2026)
- */
 function diasParaCumple(fechaNacimiento) {
   var nacimiento = _parsearFecha(fechaNacimiento);
   if (!nacimiento) return -1;
