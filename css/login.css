@@ -1,0 +1,68 @@
+:root {
+  --tinta: #1f4e5f;
+  --tinta-oscura: #153744;
+  --dorado: #f2c14e;
+  --papel: #f7f3e8;
+  --texto: #1d2a30;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--texto);
+  background: var(--papel);
+}
+
+.login-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.login-brand {
+  background: var(--tinta);
+  color: var(--papel);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  border-right: 6px solid var(--dorado);
+}
+.login-brand h1 { font-size: 2.4rem; font-weight: 700; margin: 1.25rem 0 .5rem; }
+.login-brand p { max-width: 28ch; font-size: 1.1rem; opacity: .85; }
+
+.login-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+.login-card h2 { font-weight: 700; }
+
+.form-control:focus {
+  border-color: var(--tinta);
+  box-shadow: 0 0 0 .2rem rgba(31, 78, 95, .25);
+}
+
+.btn-acceso {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: #fff;
+  padding: .7rem;
+  font-weight: 600;
+}
+.btn-acceso:hover, .btn-acceso:focus-visible {
+  background: var(--tinta-oscura);
+  border-color: var(--tinta-oscura);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .login-layout { grid-template-columns: 1fr; }
+  .login-brand { padding: 2rem; border-right: 0; border-bottom: 6px solid var(--dorado); }
+  .login-brand h1 { font-size: 1.7rem; }
+}
