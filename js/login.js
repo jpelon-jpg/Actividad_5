@@ -1,5 +1,5 @@
-// Pantalla de acceso (simulado, sin backend).
-// Usa funciones de utileria.js: validarCorreo, validarPassword, soloLetras, formatearNombre.
+// Pantalla de acceso con persistencia local mediante localStorage.
+// Usa funciones de utileria.js: validarCorreo, validarPassword, capitalizarNombre.
 
 const container = document.getElementById("container");
 const signUpButton = document.getElementById("signUp");
@@ -10,11 +10,10 @@ const inputCorreo = document.getElementById("correo");
 const inputPassword = document.getElementById("password");
 
 const formRegistro = document.getElementById("formRegistro");
-const inputRegNombre = document.getElementById("regNombre");
 const inputRegCorreo = document.getElementById("regCorreo");
 const inputRegPassword = document.getElementById("regPassword");
 
-// Si ya hay sesión simulada, se entra directo al sistema.
+// Redireccionar si ya existe una sesión activa
 if (sessionStorage.getItem("usuarioCorreo")) {
     window.location.href = "index.html";
 }
@@ -27,11 +26,13 @@ signInButton.addEventListener("click", function () {
     container.classList.remove("right-panel-active");
 });
 
-// ----- Utilidades de error -----
-// El mensaje se escribe en el div.invalid-feedback que sigue al input.
+// ----- Manejo de Errores -----
 function mostrarError(input, mensaje) {
     input.classList.add("is-invalid");
-    input.nextElementSibling.textContent = mensaje;
+    let feedback = input.nextElementSibling;
+    if (feedback && feedback.classList.contains("invalid-feedback")) {
+        feedback.textContent = mensaje;
+    }
 }
 
 function limpiarErrores(formulario) {
@@ -40,21 +41,38 @@ function limpiarErrores(formulario) {
     });
 }
 
-// "juan.perez@x.com" -> "Juan Perez"
+// ----- Manejo de Usuarios en localStorage -----
+function obtenerUsuariosRegistrados() {
+    let usuarios = localStorage.getItem("usuarios_registrados");
+    return usuarios ? JSON.parse(usuarios) : [];
+}
+
+function guardarUsuario(correo, password) {
+    let usuarios = obtenerUsuariosRegistrados();
+    usuarios.push({ correo: correo.toLowerCase(), password: password });
+    localStorage.setItem("usuarios_registrados", JSON.stringify(usuarios));
+}
+
+function buscarUsuario(correo) {
+    let usuarios = obtenerUsuariosRegistrados();
+    return usuarios.find(u => u.correo === correo.toLowerCase());
+}
+
+// Genera un nombre presentable a partir del correo (ej. "juan.perez@correo.com" -> "Juan Perez")
 function obtenerNombreDesdeCorreo(correo) {
     let parteLocal = correo.split("@")[0];
     let limpio = parteLocal.replace(/[._-]+/g, " ").replace(/[0-9]/g, "").trim();
-    return limpio ? formatearNombre(limpio) : correo;
+    return limpio ? capitalizarNombre(limpio) : correo;
 }
 
-// Guarda la sesión simulada y entra al sistema. index.html lee estos datos para el navbar.
+// Guarda la sesión activa en sessionStorage para que la lea index.html
 function iniciarSesion(nombre, correo) {
     sessionStorage.setItem("usuarioNombre", nombre);
     sessionStorage.setItem("usuarioCorreo", correo);
     window.location.href = "index.html";
 }
 
-// Validaciones compartidas por ambos formularios. Devuelve true si todo es válido.
+// ----- Validaciones Generales -----
 function validarCampoCorreo(input) {
     let correo = input.value.trim();
     if (correo === "") {
@@ -74,13 +92,13 @@ function validarCampoPassword(input) {
         return false;
     }
     if (!validarPassword(input.value)) {
-        mostrarError(input, "Debe tener 8+ caracteres, mayúscula, minúscula, número y símbolo.");
+        mostrarError(input, "Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.");
         return false;
     }
     return true;
 }
 
-// ----- Iniciar sesión -----
+// ----- EVENTO: Iniciar Sesión -----
 formLogin.addEventListener("submit", function (evento) {
     evento.preventDefault();
     limpiarErrores(formLogin);
@@ -90,27 +108,46 @@ formLogin.addEventListener("submit", function (evento) {
     if (!correoValido || !passwordValido) return;
 
     let correo = inputCorreo.value.trim();
-    iniciarSesion(obtenerNombreDesdeCorreo(correo), correo);
+    let password = inputPassword.value;
+
+    let usuarioEncontrado = buscarUsuario(correo);
+
+    if (!usuarioEncontrado) {
+        mostrarError(inputCorreo, "Este correo no está registrado.");
+        return;
+    }
+
+    if (usuarioEncontrado.password !== password) {
+        mostrarError(inputPassword, "Contraseña incorrecta.");
+        return;
+    }
+
+    // Inicio de sesión exitoso
+    let nombreParaNavbar = obtenerNombreDesdeCorreo(correo);
+    iniciarSesion(nombreParaNavbar, correo);
 });
 
-// ----- Crear cuenta (simulado: valida y entra al sistema) -----
+// ----- EVENTO: Crear Cuenta (Registro Local) -----
 formRegistro.addEventListener("submit", function (evento) {
     evento.preventDefault();
     limpiarErrores(formRegistro);
 
-    let nombre = inputRegNombre.value.trim();
-    let nombreValido = true;
-    if (nombre === "") {
-        mostrarError(inputRegNombre, "Escribe tu nombre.");
-        nombreValido = false;
-    } else if (!soloLetras(nombre)) {
-        mostrarError(inputRegNombre, "El nombre solo puede tener letras.");
-        nombreValido = false;
-    }
-
     let correoValido = validarCampoCorreo(inputRegCorreo);
     let passwordValido = validarCampoPassword(inputRegPassword);
-    if (!nombreValido || !correoValido || !passwordValido) return;
+    if (!correoValido || !passwordValido) return;
 
-    iniciarSesion(formatearNombre(nombre), inputRegCorreo.value.trim());
+    let correo = inputRegCorreo.value.trim();
+    let password = inputRegPassword.value;
+
+    if (buscarUsuario(correo)) {
+        mostrarError(inputRegCorreo, "Este correo ya se encuentra registrado.");
+        return;
+    }
+
+    // Guarda el nuevo usuario en localStorage
+    guardarUsuario(correo, password);
+
+    // Inicia sesión automáticamente tras registrarse
+    let nombreParaNavbar = obtenerNombreDesdeCorreo(correo);
+    iniciarSesion(nombreParaNavbar, correo);
 });
