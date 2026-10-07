@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel | Sistema Escolar</title>
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+
+  <!-- Protección de la página: si no hay sesión activa, regresa al login
+       antes de que se dibuje cualquier cosa. -->
+  <script>
+    if (!sessionStorage.getItem("usuarioCorreo")) {
+      window.location.replace("login.html");
+    }
+  </script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+  <!-- ===================== SIDEBAR (menú lateral) ===================== -->
+  <aside class="sidebar" id="sidebar" aria-label="Menú principal">
+    <div class="sidebar-marca">
+      <img src="img/logo.svg" alt="" width="36" height="36">
+      <span>Sistema Escolar</span>
+    </div>
+
+    <nav class="sidebar-menu">
+      <p class="sidebar-titulo">Menú</p>
+      <ul class="list-unstyled mb-0">
+
+        <li>
+          <a href="#inicio" class="sidebar-enlace" data-vista="inicio">
+            <span class="icono i-inicio"></span>
+            Inicio
+          </a>
+        </li>
+
+        <!-- Opción Usuarios con submenú desplegable Captura -->
+        <li>
+          <button class="sidebar-enlace sidebar-grupo" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#submenuUsuarios"
+                  aria-expanded="true" aria-controls="submenuUsuarios">
+            <span class="icono i-usuarios"></span>
+            Usuarios
+            <span class="icono icono-flecha i-chevron"></span>
+          </button>
+          <ul class="collapse show list-unstyled submenu" id="submenuUsuarios">
+            <li>
+              <a href="#captura" class="sidebar-enlace" data-vista="captura">
+                <span class="icono i-captura"></span>
+                Captura
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Opción Alumnos con submenú Registro -->
+        <li>
+          <button class="sidebar-enlace sidebar-grupo" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#submenuAlumnos"
+                  aria-expanded="true" aria-controls="submenuAlumnos">
+            <span class="icono i-alumnos"></span>
+            Alumnos
+            <span class="icono icono-flecha i-chevron"></span>
+          </button>
+          <ul class="collapse show list-unstyled submenu" id="submenuAlumnos">
+            <li>
+              <a href="#alumnos" class="sidebar-enlace" data-vista="alumnos">
+                <span class="icono i-captura"></span>
+                Registro
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-pie">
+      <button type="button" class="sidebar-enlace btn-salir">
+        <span class="icono i-salir"></span>
+        Salir del sistema
+      </button>
+    </div>
+  </aside>
+
+  <!-- Fondo oscuro que aparece detrás del sidebar en celulares -->
+  <div class="sidebar-fondo" id="sidebarFondo"></div>
+
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+  <div class="principal">
+
+    <!-- ===================== NAVBAR (barra superior) ===================== -->
+    <nav class="navbar barra-superior px-3">
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn-hamburguesa" id="btnHamburguesa" type="button"
+                aria-controls="sidebar" aria-expanded="true" aria-label="Abrir o cerrar menú">
+          <span class="icono i-menu"></span>
+        </button>
+        <span class="barra-titulo" id="tituloVista">Inicio</span>
+      </div>
+
+      <!-- Nombre del usuario que inició sesión + menú desplegable -->
+      <div class="dropdown ms-auto">
+        <button class="btn-usuario dropdown-toggle" type="button" id="btnUsuario"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="avatar" id="avatarUsuario">?</span>
+          <span class="nombre-usuario" id="nombreUsuario">Usuario</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="btnUsuario">
+          <li class="px-3 py-2">
+            <div class="fw-semibold" id="menuNombre">Usuario</div>
+            <div class="small text-body-secondary" id="menuCorreo">correo@ejemplo.com</div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <button class="dropdown-item text-danger d-flex align-items-center gap-2 btn-salir" type="button">
+              <span class="icono i-salir"></span>
+              Salir del sistema
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="contenido">
+
+      <!-- ===================== VISTA: INICIO ===================== -->
+      <section class="vista" id="vista-inicio" data-titulo="Inicio">
+        <div class="bienvenida mb-4">
+          <p class="mb-1 opacity-75">Bienvenido al sistema</p>
+          <h1 class="h3 mb-2">Hola, <span id="saludoNombre">usuario</span></h1>
+          <p class="mb-0 opacity-75">Usa el menú lateral para capturar usuarios o registrar alumnos.</p>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-sm-6 col-xl-4">
+            <div class="tarjeta-dato">
+              <span class="tarjeta-icono"><span class="icono i-usuarios"></span></span>
+              <div>
+                <div class="tarjeta-numero" id="totalUsuarios">0</div>
+                <div class="tarjeta-etiqueta">Usuarios registrados</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-4">
+            <div class="tarjeta-dato">
+              <span class="tarjeta-icono"><span class="icono i-alumnos"></span></span>
+              <div>
+                <div class="tarjeta-numero" id="totalAlumnos">0</div>
+                <div class="tarjeta-etiqueta">Alumnos registrados</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-4">
+            <div class="tarjeta-dato">
+              <span class="tarjeta-icono"><span class="icono i-pastel"></span></span>
+              <div>
+                <div class="tarjeta-numero" id="totalMayores">0</div>
+                <div class="tarjeta-etiqueta">Alumnos mayores de edad</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a href="#captura" class="btn btn-acento" data-vista="captura">Capturar usuario</a>
+          <a href="#alumnos" class="btn btn-outline-secondary" data-vista="alumnos">Registrar alumno</a>
+        </div>
+      </section>
+
+      <!-- ===================== VISTA: USUARIOS > CAPTURA ===================== -->
+      <section class="vista" id="vista-captura" data-titulo="Usuarios / Captura" hidden>
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <div class="card panel">
+              <div class="card-body">
+                <h2 class="h5 mb-1">Captura de usuario</h2>
+                <p class="text-body-secondary small mb-4">El usuario capturado podrá iniciar sesión en login.html.</p>
+
+                <form id="formUsuario" novalidate>
+                  <div class="mb-3">
+                    <label for="usuNombre" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="usuNombre" autocomplete="off" placeholder="Ej. Juan Pérez">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="usuCorreo" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="usuCorreo" autocomplete="off" placeholder="nombre@correo.com">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="mb-2">
+                    <label for="usuPassword" class="form-label">Contraseña</label>
+                    <div class="input-group has-validation">
+                      <input type="password" class="form-control" id="usuPassword" autocomplete="new-password">
+                      <button class="btn btn-outline-secondary btn-ver" type="button" id="btnVerPassword" aria-label="Mostrar contraseña">
+                        <span class="icono i-ojo"></span>
+                      </button>
+                      <div class="invalid-feedback"></div>
+                    </div>
+                  </div>
+
+                  <!-- Requisitos de validarPassword, se marcan mientras se escribe -->
+                  <ul class="requisitos list-unstyled small mb-4" id="requisitosPassword">
+                    <li data-regla="largo">Mínimo 8 caracteres</li>
+                    <li data-regla="mayus">Una letra mayúscula</li>
+                    <li data-regla="minus">Una letra minúscula</li>
+                    <li data-regla="numero">Un número</li>
+                    <li data-regla="simbolo">Un símbolo (#, $, !, …)</li>
+                  </ul>
+
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-acento">Guardar usuario</button>
+                    <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="card panel">
+              <div class="card-body">
+                <h2 class="h5 mb-3">Usuarios registrados</h2>
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead>
+                      <tr><th>Nombre</th><th>Correo</th><th class="text-end">Acción</th></tr>
+                    </thead>
+                    <tbody id="tablaUsuarios"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== VISTA: ALUMNOS ===================== -->
+      <section class="vista" id="vista-alumnos" data-titulo="Alumnos / Registro" hidden>
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <div class="card panel">
+              <div class="card-body">
+                <h2 class="h5 mb-1">Registro de alumno</h2>
+                <p class="text-body-secondary small mb-4">Al guardar se muestra si el alumno es mayor de edad.</p>
+
+                <form id="formAlumno" novalidate>
+                  <div class="mb-3">
+                    <label for="aluNombre" class="form-label">Nombre(s)</label>
+                    <input type="text" class="form-control" id="aluNombre" autocomplete="off" placeholder="Ej. María José">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="aluApellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="aluApellidos" autocomplete="off" placeholder="Ej. López Ruiz">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="aluControl" class="form-label">Número de control</label>
+                    <input type="text" class="form-control" id="aluControl" inputmode="numeric"
+                           maxlength="6" autocomplete="off" placeholder="6 dígitos, ej. 210345">
+                    <div class="form-text"><span id="contadorControl">0</span>/6 dígitos</div>
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="aluFecha" class="form-label">Fecha de nacimiento</label>
+                    <input type="date" class="form-control" id="aluFecha">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-acento">Guardar y ver edad</button>
+                    <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="card panel">
+              <div class="card-body">
+                <h2 class="h5 mb-3">Alumnos registrados</h2>
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead>
+                      <tr><th>No. control</th><th>Nombre</th><th>Edad</th><th class="text-end">Acción</th></tr>
+                    </thead>
+                    <tbody id="tablaAlumnos"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================== MODAL DE EDAD ===================== -->
+  <div class="modal fade" id="modalEdad" tabindex="-1" aria-labelledby="modalEdadTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="modalEdadTitulo">Resultado de edad</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="edad-circulo" id="modalEdadNumero">0</div>
+          <p class="text-body-secondary small mb-3">años cumplidos</p>
+          <p class="fw-semibold mb-1" id="modalEdadNombre">Nombre del alumno</p>
+          <p class="small text-body-secondary mb-3">No. de control: <span id="modalEdadControl">000000</span></p>
+          <span class="badge rounded-pill fs-6 px-3 py-2" id="modalEdadEstado">Mayor de edad</span>
+          <p class="small text-body-secondary mt-3 mb-0" id="modalEdadCumple"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-acento" data-bs-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso flotante (toast) para confirmaciones -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast align-items-center border-0" id="aviso" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="avisoTexto">Listo</div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/utileria.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>
