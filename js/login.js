@@ -1,5 +1,5 @@
 // Pantalla de acceso con persistencia local mediante localStorage.
-// Usa funciones de utileria.js: validarCorreo, validarPassword, capitalizarNombre.
+// Usa funciones de utileria.js: validarCorreo, validarPassword.
 
 const container = document.getElementById("container");
 const signUpButton = document.getElementById("signUp");
@@ -49,20 +49,14 @@ function obtenerUsuariosRegistrados() {
 
 function guardarUsuario(correo, password) {
     let usuarios = obtenerUsuariosRegistrados();
-    usuarios.push({ correo: correo.toLowerCase(), password: password });
+    // "correo" en minúsculas sirve para buscar; "correoOriginal" guarda el texto tal cual se escribió
+    usuarios.push({ correo: correo.toLowerCase(), correoOriginal: correo, password: password });
     localStorage.setItem("usuarios_registrados", JSON.stringify(usuarios));
 }
 
 function buscarUsuario(correo) {
     let usuarios = obtenerUsuariosRegistrados();
     return usuarios.find(u => u.correo === correo.toLowerCase());
-}
-
-// Genera un nombre presentable a partir del correo (ej. "juan.perez@correo.com" -> "Juan Perez")
-function obtenerNombreDesdeCorreo(correo) {
-    let parteLocal = correo.split("@")[0];
-    let limpio = parteLocal.replace(/[._-]+/g, " ").replace(/[0-9]/g, "").trim();
-    return limpio ? capitalizarNombre(limpio) : correo;
 }
 
 // Guarda la sesión activa en sessionStorage para que la lea index.html
@@ -122,8 +116,9 @@ formLogin.addEventListener("submit", function (evento) {
         return;
     }
 
-    // Inicio de sesión exitoso
-    let nombreParaNavbar = obtenerNombreDesdeCorreo(correo);
+    // Inicio de sesión exitoso: se muestra el nombre de usuario tal cual se capturó;
+    // si no tiene nombre, se muestra el correo tal cual se escribió
+    let nombreParaNavbar = usuarioEncontrado.nombre || correo;
     iniciarSesion(nombreParaNavbar, correo);
 });
 
@@ -147,7 +142,6 @@ formRegistro.addEventListener("submit", function (evento) {
     // Guarda el nuevo usuario en localStorage
     guardarUsuario(correo, password);
 
-    // Inicia sesión automáticamente tras registrarse
-    let nombreParaNavbar = obtenerNombreDesdeCorreo(correo);
-    iniciarSesion(nombreParaNavbar, correo);
+    // Inicia sesión automáticamente tras registrarse (el navbar muestra el correo tal cual)
+    iniciarSesion(correo, correo);
 });

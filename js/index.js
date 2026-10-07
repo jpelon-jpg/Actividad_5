@@ -166,12 +166,6 @@ function guardarLista(llave, lista) {
     localStorage.setItem(llave, JSON.stringify(lista));
 }
 
-// Mismo criterio que login.js para sacar un nombre a partir del correo
-function nombreDesdeCorreo(correo) {
-    let limpio = correo.split("@")[0].replace(/[._-]+/g, " ").replace(/[0-9]/g, "").trim();
-    return limpio ? capitalizarNombre(limpio) : correo;
-}
-
 // Valida un nombre de una o varias palabras usando soloLetras en cada palabra
 function sonSoloLetras(texto) {
     let palabras = texto.trim().split(/\s+/);
@@ -319,9 +313,12 @@ function pintarUsuarios() {
     usuarios.forEach(function (usuario) {
         let tr = document.createElement("tr");
         let esActual = usuario.correo === sesionCorreo.toLowerCase();
-        let nombre = usuario.nombre || nombreDesdeCorreo(usuario.correo);
+        // Nombre y correo se muestran tal cual los escribió el usuario
+        let nombre = usuario.nombre || "—";
+        let correo = usuario.correoOriginal || usuario.correo;
 
         let tdNombre = crearCelda(nombre);
+        if (!usuario.nombre) tdNombre.classList.add("text-body-secondary");
         if (esActual) {
             let etiqueta = document.createElement("span");
             etiqueta.className = "badge text-bg-light border ms-2";
@@ -329,12 +326,12 @@ function pintarUsuarios() {
             tdNombre.appendChild(etiqueta);
         }
         tr.appendChild(tdNombre);
-        tr.appendChild(crearCelda(usuario.correo, "text-break"));
+        tr.appendChild(crearCelda(correo, "text-break"));
 
         let tdAccion = crearCelda("", "text-end");
         if (!esActual) {
             tdAccion.appendChild(crearBotonIcono("i-borrar", "Eliminar usuario", "btn-outline-danger", function () {
-                if (confirm("¿Eliminar al usuario " + usuario.correo + "?")) eliminarUsuario(usuario.correo);
+                if (confirm("¿Eliminar al usuario " + correo + "?")) eliminarUsuario(usuario.correo);
             }));
         }
         tr.appendChild(tdAccion);
@@ -359,11 +356,15 @@ formUsuario.addEventListener("submit", function (evento) {
     let passwordOk = validarCampoPasswordUsuario();
     if (!nombreOk || !correoOk || !passwordOk) return;
 
-    // Se guarda en la misma lista que usa login.js, así el usuario puede iniciar sesión
+    // Se guarda en la misma lista que usa login.js, así el usuario puede iniciar sesión.
+    // Nombre y correo se guardan tal cual se escribieron (mayúsculas, minúsculas y números);
+    // "correo" en minúsculas solo sirve para buscarlo al iniciar sesión.
+    let correoEscrito = usuCorreo.value.trim();
     let usuarios = leerLista(LLAVE_USUARIOS);
     usuarios.push({
-        nombre: capitalizarNombre(usuNombre.value),
-        correo: usuCorreo.value.trim().toLowerCase(),
+        nombre: usuNombre.value.trim(),
+        correo: correoEscrito.toLowerCase(),
+        correoOriginal: correoEscrito,
         password: usuPassword.value
     });
     guardarLista(LLAVE_USUARIOS, usuarios);

@@ -208,7 +208,7 @@ body {
   display: flex;
   align-items: center;
   gap: .55rem;
-  max-width: 260px;
+  max-width: min(440px, 60vw);
   padding: .3rem .6rem .3rem .3rem;
   border: 1px solid transparent;
   border-radius: 999px;
