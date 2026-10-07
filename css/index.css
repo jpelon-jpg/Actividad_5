@@ -22,26 +22,29 @@ body {
   min-height: 100vh;
 }
 
-/* ---------- Iconos (archivos SVG de la carpeta img, coloreados con CSS) ---------- */
+/* ---------- Iconos (archivos SVG de la carpeta img) ----------
+   Se usan con <img> para que se vean también al abrir el archivo
+   directamente (file://). Los SVG son negros y el color se ajusta con filter. */
 .icono {
   display: inline-block;
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  background-color: currentColor;
-  -webkit-mask: var(--icono) center / contain no-repeat;
-          mask: var(--icono) center / contain no-repeat;
+  vertical-align: middle;
 }
-.i-menu     { --icono: url(../img/menu.svg); }
-.i-inicio   { --icono: url(../img/inicio.svg); }
-.i-usuarios { --icono: url(../img/usuarios.svg); }
-.i-alumnos  { --icono: url(../img/alumnos.svg); }
-.i-captura  { --icono: url(../img/captura.svg); }
-.i-salir    { --icono: url(../img/salir.svg); }
-.i-chevron  { --icono: url(../img/chevron.svg); }
-.i-ojo      { --icono: url(../img/ojo.svg); }
-.i-borrar   { --icono: url(../img/borrar.svg); }
-.i-pastel   { --icono: url(../img/pastel.svg); }
+.icono-blanco,
+.sidebar .icono,
+.tarjeta-icono .icono,
+.btn-outline-danger:hover .icono,
+.btn-outline-secondary:hover .icono { filter: invert(1); }
+.sidebar .icono { opacity: .75; }
+.sidebar-enlace:hover .icono,
+.sidebar-enlace.activo .icono { opacity: 1; }
+.icono-rojo,
+.dropdown-menu .icono,
+.btn-outline-danger .icono {
+  filter: invert(27%) sepia(85%) saturate(2400%) hue-rotate(340deg) brightness(92%);
+}
 
 /* ---------- Botón principal con los colores del login ---------- */
 .btn-acento {
@@ -193,7 +196,7 @@ body {
   color: #33414d;
 }
 .btn-hamburguesa:hover { background: #eef1f4; }
-.btn-hamburguesa .icono { width: 22px; height: 22px; }
+.btn-hamburguesa .icono { width: 22px; height: 22px; opacity: .8; }
 
 .barra-titulo {
   font-weight: 600;
@@ -271,8 +274,7 @@ body {
   width: 46px;
   height: 46px;
   border-radius: 12px;
-  background: #fff0ed;
-  color: var(--acento);
+  background: linear-gradient(135deg, var(--acento), var(--acento-2));
 }
 .tarjeta-icono .icono { width: 24px; height: 24px; }
 .tarjeta-numero { font-size: 1.6rem; font-weight: 700; line-height: 1.1; color: #1f2a33; }
@@ -290,7 +292,7 @@ body {
 .bienvenida h1 { color: #fff; font-weight: 700; }
 
 .btn-ver { display: inline-flex; align-items: center; }
-.btn-ver .icono { width: 18px; height: 18px; }
+.btn-ver .icono { width: 18px; height: 18px; opacity: .6; }
 
 /* Lista de requisitos de la contraseña */
 .requisitos li {

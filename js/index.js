@@ -186,9 +186,11 @@ function crearBotonIcono(icono, etiqueta, claseBoton, alClic) {
     boton.className = "btn btn-sm btn-icono " + claseBoton;
     boton.title = etiqueta;
     boton.setAttribute("aria-label", etiqueta);
-    let span = document.createElement("span");
-    span.className = "icono " + icono;
-    boton.appendChild(span);
+    let imagen = document.createElement("img");
+    imagen.className = "icono";
+    imagen.src = "img/" + icono + ".svg";
+    imagen.alt = "";
+    boton.appendChild(imagen);
     boton.addEventListener("click", alClic);
     return boton;
 }
@@ -330,7 +332,7 @@ function pintarUsuarios() {
 
         let tdAccion = crearCelda("", "text-end");
         if (!esActual) {
-            tdAccion.appendChild(crearBotonIcono("i-borrar", "Eliminar usuario", "btn-outline-danger", function () {
+            tdAccion.appendChild(crearBotonIcono("borrar", "Eliminar usuario", "btn-outline-danger", function () {
                 if (confirm("¿Eliminar al usuario " + correo + "?")) eliminarUsuario(usuario.correo);
             }));
         }
@@ -520,10 +522,10 @@ function pintarAlumnos() {
         tr.appendChild(tdEdad);
 
         let tdAccion = crearCelda("", "text-end text-nowrap");
-        tdAccion.appendChild(crearBotonIcono("i-pastel", "Ver edad", "btn-outline-secondary me-1", function () {
+        tdAccion.appendChild(crearBotonIcono("pastel", "Ver edad", "btn-outline-secondary me-1", function () {
             mostrarModalEdad(alumno);
         }));
-        tdAccion.appendChild(crearBotonIcono("i-borrar", "Eliminar alumno", "btn-outline-danger", function () {
+        tdAccion.appendChild(crearBotonIcono("borrar", "Eliminar alumno", "btn-outline-danger", function () {
             if (confirm("¿Eliminar al alumno con número de control " + alumno.control + "?")) eliminarAlumno(alumno.control);
         }));
         tr.appendChild(tdAccion);
