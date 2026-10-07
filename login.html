@@ -3,99 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>utileria.js | Iniciar sesión</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>Iniciar sesión | Sistema Escolar</title>
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/login.css">
 </head>
-<body>
-  <div class="pagina" style="max-width: 460px;">
-    <h1>Iniciar sesión</h1>
+<body class="login-page">
+  <!-- Diseño base: "Double slider sign in/up form" de Florin Pop, adaptado al proyecto -->
+  <div class="login-container" id="container">
 
-    <section class="panel">
-      <p class="aviso" id="aviso" role="alert"></p>
+    <!-- Crear cuenta (simulado) -->
+    <div class="form-container sign-up-container">
+      <form id="formRegistro" novalidate>
+        <h1>Crear cuenta</h1>
+        <span>Usa tu correo para registrarte</span>
 
-      <form id="formLogin" novalidate>
-        <div class="campo">
-          <label for="correo">Correo electrónico</label>
-          <input type="email" id="correo" autocomplete="username" placeholder="ana@correo.com">
-          <p class="mensaje" id="msg-correo"></p>
-        </div>
+        <input type="text" class="form-control" id="regNombre" placeholder="Nombre" autocomplete="name">
+        <div class="invalid-feedback"></div>
 
-        <div class="campo">
-          <label for="password">Contraseña</label>
-          <div class="fila-password">
-            <input type="password" id="password" autocomplete="current-password">
-            <button type="button" class="btn-secundario" id="verPassword" aria-pressed="false">Mostrar</button>
-          </div>
-          
-          <p class="mensaje" id="msg-password"></p>
-        </div>
+        <input type="email" class="form-control" id="regCorreo" placeholder="Correo electrónico" autocomplete="email">
+        <div class="invalid-feedback"></div>
 
-        <button type="submit" class="btn-primario">Entrar</button>
+        <input type="password" class="form-control" id="regPassword" placeholder="Contraseña" autocomplete="new-password">
+        <div class="invalid-feedback"></div>
+
+        <button type="submit">Registrarme</button>
       </form>
-    </section>
+    </div>
 
-    
+    <!-- Iniciar sesión -->
+    <div class="form-container sign-in-container">
+      <form id="formLogin" novalidate>
+        <h1>Iniciar sesión</h1>
+        <span>Ingresa con tu cuenta</span>
+
+        <input type="email" class="form-control" id="correo" placeholder="Correo electrónico" autocomplete="username">
+        <div class="invalid-feedback"></div>
+
+        <input type="password" class="form-control" id="password" placeholder="Contraseña" autocomplete="current-password">
+        <div class="invalid-feedback"></div>
+
+        <small class="hint">Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.</small>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+
+    <!-- Panel deslizable -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <img src="img/logo.svg" alt="Logo" width="56" height="56">
+          <h1>¡Bienvenido de nuevo!</h1>
+          <p>Si ya tienes cuenta, inicia sesión con tus datos.</p>
+          <button type="button" class="ghost" id="signIn">Iniciar sesión</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <img src="img/logo.svg" alt="Logo" width="56" height="56">
+          <h1>Sistema Escolar</h1>
+          <p>¿Aún no tienes cuenta? Regístrate para entrar al sistema.</p>
+          <button type="button" class="ghost" id="signUp">Crear cuenta</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="js/utileria.js"></script>
-  <script>
-    var inputCorreo = document.getElementById("correo");
-    var inputPassword = document.getElementById("password");
-    var aviso = document.getElementById("aviso");
-
-    function mostrarAviso(tipo, texto) {
-      aviso.className = "aviso visible " + tipo;
-      aviso.textContent = texto;
-    }
-
-    function marcar(input, msgId, valido, textoError) {
-      input.classList.toggle("invalido", !valido);
-      input.classList.toggle("valido", valido);
-      document.getElementById(msgId).textContent = valido ? "" : textoError;
-      return valido;
-    }
-
-    // Lista de requisitos que se marca mientras se escribe.
-    // La validación oficial sigue siendo validarPassword().
-    inputPassword.addEventListener("input", function () {
-      var v = inputPassword.value;
-      var reglas = {
-        longitud: v.length >= 8,
-        mayuscula: /[A-Z]/.test(v),
-        minuscula: /[a-z]/.test(v),
-        numero: /[0-9]/.test(v),
-        especial: /[^A-Za-z0-9\s]/.test(v)
-      };
-      var items = document.querySelectorAll("#requisitos li");
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.toggle("cumple", reglas[items[i].getAttribute("data-req")]);
-      }
-    });
-
-    document.getElementById("verPassword").addEventListener("click", function () {
-      var visible = inputPassword.type === "text";
-      inputPassword.type = visible ? "password" : "text";
-      this.textContent = visible ? "Mostrar" : "Ocultar";
-      this.setAttribute("aria-pressed", String(!visible));
-    });
-
-    document.getElementById("formLogin").addEventListener("submit", function (e) {
-      e.preventDefault();
-      aviso.className = "aviso";
-
-      var correoOk = marcar(inputCorreo, "msg-correo", validarCorreo(inputCorreo.value),
-        "Escribe un correo válido, como ana@correo.com.");
-      var passOk = marcar(inputPassword, "msg-password", validarPassword(inputPassword.value),
-        "La contraseña no cumple con todos los requisitos.");
-
-      if (!correoOk || !passOk) {
-        mostrarAviso("error", "Revisa los campos marcados antes de continuar.");
-        return;
-      }
-
-      // Demostración: no hay servidor, así que solo se confirma la validación.
-      mostrarAviso("exito", "Datos válidos. En una app real, aquí se enviarían al servidor.");
-    });
-  </script>
+  <script src="js/login.js"></script>
 </body>
 </html>
