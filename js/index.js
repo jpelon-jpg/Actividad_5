@@ -1,7 +1,5 @@
 // Pantalla del sistema (index.html).
-// Usa funciones de utileria.js: validarCorreo, validarPassword, validarLongitud,
-// soloLetras, capitalizarNombre, calcularEdad, esMayorDeEdad, diasParaCumple.
-//
+// Usa funciones de utileria.js
 // Datos que comparte con login.js:
 //   sessionStorage "usuarioNombre" y "usuarioCorreo"  -> sesión activa
 //   localStorage   "usuarios_registrados"              -> usuarios que pueden entrar
@@ -12,9 +10,7 @@ const LLAVE_USUARIOS = "usuarios_registrados";
 const LLAVE_ALUMNOS = "alumnos_registrados";
 const DIGITOS_CONTROL = 6;
 
-// =====================================================================
-// 1. SESIÓN: leer el usuario que inició sesión en login.html
-// =====================================================================
+// leer el usuario que inicio sesión en el login
 const sesionCorreo = sessionStorage.getItem("usuarioCorreo");
 const sesionNombre = sessionStorage.getItem("usuarioNombre") || sesionCorreo;
 
@@ -50,9 +46,7 @@ document.querySelectorAll(".btn-salir").forEach(function (boton) {
     boton.addEventListener("click", cerrarSesion);
 });
 
-// =====================================================================
-// 2. SIDEBAR: botón hamburguesa para abrir / cerrar
-// =====================================================================
+// sidebar boton hambuerguesa (abrir y cerrar)
 const btnHamburguesa = document.getElementById("btnHamburguesa");
 const sidebarFondo = document.getElementById("sidebarFondo");
 const consultaEscritorio = window.matchMedia("(min-width: 992px)");
@@ -95,9 +89,7 @@ consultaEscritorio.addEventListener("change", function () {
     actualizarAriaHamburguesa();
 });
 
-// =====================================================================
-// 3. NAVEGACIÓN ENTRE VISTAS (Inicio, Usuarios/Captura, Alumnos)
-// =====================================================================
+// navegación entre vistas del sidebar
 const vistas = document.querySelectorAll(".vista");
 const tituloVista = document.getElementById("tituloVista");
 
@@ -132,9 +124,7 @@ document.querySelectorAll("[data-vista]").forEach(function (enlace) {
     });
 });
 
-// =====================================================================
-// 4. UTILIDADES DE FORMULARIO Y ALMACENAMIENTO
-// =====================================================================
+// utilidades del formulario y almacenamiento
 function mostrarError(input, mensaje) {
     input.classList.remove("is-valid");
     input.classList.add("is-invalid");
@@ -214,9 +204,7 @@ function mostrarAviso(texto, tipo) {
     aviso.show();
 }
 
-// =====================================================================
-// 5. USUARIOS > CAPTURA (validarCorreo y validarPassword)
-// =====================================================================
+// usuarios y captura de usuarios
 const formUsuario = document.getElementById("formUsuario");
 const usuNombre = document.getElementById("usuNombre");
 const usuCorreo = document.getElementById("usuCorreo");
@@ -383,9 +371,7 @@ formUsuario.addEventListener("reset", function () {
     setTimeout(actualizarRequisitos, 0);
 });
 
-// =====================================================================
-// 6. ALUMNOS: número de control (6 dígitos) y modal de edad
-// =====================================================================
+// numero de contral y modal de edad
 const formAlumno = document.getElementById("formAlumno");
 const aluNombre = document.getElementById("aluNombre");
 const aluApellidos = document.getElementById("aluApellidos");
@@ -416,8 +402,7 @@ function validarCampoTextoAlumno(input, etiqueta) {
     return true;
 }
 
-// Número de control: exactamente 6 dígitos (validarLongitud revisa el máximo
-// y que sean solo números; además se exige que no falte ninguno).
+// Número de control: exactamente 6 dígitos (validarLongitud)
 function validarCampoControl() {
     let control = aluControl.value.trim();
     if (control === "") {
@@ -573,9 +558,7 @@ formAlumno.addEventListener("reset", function () {
     contadorControl.textContent = "0";
 });
 
-// =====================================================================
-// 7. ARRANQUE
-// =====================================================================
+
 mostrarUsuarioEnNavbar();
 pintarUsuarios();
 pintarAlumnos();
