@@ -17,7 +17,7 @@ Docente: Ing. Adelina Martínez Nieto
 | Poblete Hernández Jhonatan Ivan | `login.html`, `css/login.css`, `js/login.js`, `js/utileria.js`, `img/`, README |
 | Sixto Morales Angel | `index.html`, `css/index.css`, `js/index.js`, iconos de `img/`, README |
 
-🔗 **Sitio en vivo (GitHub Pages):** LINK_PAGES
+🔗 **Sitio en vivo (GitHub Pages):** [LINK_PAGES](https://jpelon-jpg.github.io/Actividad_5/login.html)
 
 </div>
 
