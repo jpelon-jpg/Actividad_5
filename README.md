@@ -486,18 +486,20 @@ El alumno se agrega a la tabla de **Alumnos registrados**. El botón del pastel 
 
 | # | Paso | Captura |
 |---|---|---|
-| 1 | Se abre `login.html` y se inicia sesión | ![](img/capturas/01-login.png) |
-| 2 | Se entra a `index.html` y el navbar muestra al usuario | ![](img/capturas/04-inicio-sidebar.png) |
-| 3 | Se captura un usuario en **Usuarios → Captura** | ![](img/capturas/07-usuarios-registrados.png) |
-| 4 | Se registra un alumno y aparece el modal de edad | ![](img/capturas/10-modal-mayor.png) |
-| 5 | Se abre el menú del usuario y se elige **Salir del sistema** | ![](img/capturas/08-navbar-dropdown.png) |
-| 6 | Se regresa a `login.html` con la sesión cerrada | ![](img/capturas/12-salir-login.png) |
+| 1 | Se abre `login.html` y se inicia sesión | ![](img/capturas/f1.png) |
+| 2 | Se entra a `index.html` y el navbar muestra al usuario | ![](img/capturas/f2.png) |
+| 3 | Se captura un usuario en **Usuarios → Captura** | ![](img/capturas/f3.png) |
+| 4 | Una vez capturado aparece en **Usuarios registrados** | ![](img/capturas/f4.png) |
+| 5 | Se captura un alumno en **Alumnos → Registro** | ![](img/capturas/f5.png) |
+| 6 | Una vez capturado aparece el modal de edad y sera visible en  **Alumnos registrados** | ![](img/capturas/f6.png) |
+| 7 | Se abre el menú del usuario y se elige **Salir del sistema** | ![](img/capturas/f7.png) |
+| 8 | Se regresa a `login.html` con la sesión cerrada | ![](img/capturas/12-salir-login.png) |
 
 ---
 
 ## 💻 Cómo ejecutarlo
 
-**En línea:** abre https://jpelon-jpg.github.io/Actividad_5/login.html
+**En línea:** abre https://github.com/jpelon-jpg/Actividad_5.git
 
 **En tu computadora:**
 
