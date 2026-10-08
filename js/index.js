@@ -185,6 +185,24 @@ function crearBotonIcono(icono, etiqueta, claseBoton, alClic) {
     return boton;
 }
 
+// Confirmación con SweetAlert2 antes de eliminar
+function confirmarEliminacion(titulo, texto, alConfirmar) {
+    Swal.fire({
+        title: titulo,
+        text: texto,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        reverseButtons: true,
+        focusCancel: true
+    }).then(function (resultado) {
+        if (resultado.isConfirmed) alConfirmar();
+    });
+}
+
 function filaVacia(columnas, mensaje) {
     let tr = document.createElement("tr");
     tr.className = "tabla-vacia";
@@ -321,7 +339,9 @@ function pintarUsuarios() {
         let tdAccion = crearCelda("", "text-end");
         if (!esActual) {
             tdAccion.appendChild(crearBotonIcono("borrar", "Eliminar usuario", "btn-outline-danger", function () {
-                if (confirm("¿Eliminar al usuario " + correo + "?")) eliminarUsuario(usuario.correo);
+                    confirmarEliminacion("¿Eliminar usuario?", "Se eliminará al usuario " + correo + ".", function () {
+                    eliminarUsuario(usuario.correo);
+                });
             }));
         }
         tr.appendChild(tdAccion);
@@ -511,7 +531,9 @@ function pintarAlumnos() {
             mostrarModalEdad(alumno);
         }));
         tdAccion.appendChild(crearBotonIcono("borrar", "Eliminar alumno", "btn-outline-danger", function () {
-            if (confirm("¿Eliminar al alumno con número de control " + alumno.control + "?")) eliminarAlumno(alumno.control);
+            confirmarEliminacion("¿Eliminar alumno?", "Se eliminará al alumno con número de control " + alumno.control + ".", function () {
+                eliminarAlumno(alumno.control);
+            });
         }));
         tr.appendChild(tdAccion);
         tabla.appendChild(tr);
