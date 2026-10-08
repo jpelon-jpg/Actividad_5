@@ -273,7 +273,6 @@ function validarCampoPassword(input) {
 
 ![Validaciones del login](img/capturas/03-login-validaciones.png)
 
-![Validaciones del login](img/capturas/032-login-validaciones.png)
 
 ---
 
