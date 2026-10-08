@@ -6,8 +6,7 @@
   <title>Panel | Sistema Escolar</title>
   <link rel="icon" href="img/logo.svg" type="image/svg+xml">
 
-  <!-- Protección de la página: si no hay sesión activa, regresa al login
-       antes de que se dibuje cualquier cosa. -->
+  <!--Funciona para no ingresar al index sino se ha iniciado sesión -->
   <script>
     if (!sessionStorage.getItem("usuarioCorreo")) {
       window.location.replace("login.html");
@@ -19,7 +18,7 @@
 </head>
 <body>
 
-  <!-- ===================== SIDEBAR (menú lateral) ===================== -->
+  <!-- sidebar -->
   <aside class="sidebar" id="sidebar" aria-label="Menú principal">
     <div class="sidebar-marca">
       <img src="img/logo.svg" alt="" width="36" height="36">
@@ -85,13 +84,12 @@
     </div>
   </aside>
 
-  <!-- Fondo oscuro que aparece detrás del sidebar en celulares -->
   <div class="sidebar-fondo" id="sidebarFondo"></div>
 
-  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+  <!-- contenido principal -->
   <div class="principal">
 
-    <!-- ===================== NAVBAR (barra superior) ===================== -->
+    <!-- navbar  -->
     <nav class="navbar barra-superior px-3">
       <div class="d-flex align-items-center gap-2">
         <button class="btn-hamburguesa" id="btnHamburguesa" type="button"
@@ -126,7 +124,7 @@
 
     <main class="contenido">
 
-      <!-- ===================== VISTA: INICIO ===================== -->
+      <!-- vista del inicio -->
       <section class="vista" id="vista-inicio" data-titulo="Inicio">
         <div class="bienvenida mb-4">
           <p class="mb-1 opacity-75">Bienvenido al sistema</p>
@@ -170,7 +168,7 @@
         </div>
       </section>
 
-      <!-- ===================== VISTA: USUARIOS > CAPTURA ===================== -->
+      <!-- vista de usuarios y captura========= -->
       <section class="vista" id="vista-captura" data-titulo="Usuarios / Captura" hidden>
         <div class="row g-4">
           <div class="col-lg-5">
@@ -239,7 +237,7 @@
         </div>
       </section>
 
-      <!-- ===================== VISTA: ALUMNOS ===================== -->
+      <!-- vista de los alumnos -->
       <section class="vista" id="vista-alumnos" data-titulo="Alumnos / Registro" hidden>
         <div class="row g-4">
           <div class="col-lg-5">
@@ -304,7 +302,7 @@
     </main>
   </div>
 
-  <!-- ===================== MODAL DE EDAD ===================== -->
+  <!-- modal de edad -->
   <div class="modal fade" id="modalEdad" tabindex="-1" aria-labelledby="modalEdadTitulo" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -327,7 +325,7 @@
     </div>
   </div>
 
-  <!-- Aviso flotante (toast) para confirmaciones -->
+  <!-- Aviso para confirmaciones-->
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div class="toast align-items-center border-0" id="aviso" role="status" aria-live="polite" aria-atomic="true">
       <div class="d-flex">
