@@ -14,7 +14,7 @@ Docente: Ing. Adelina Martínez Nieto
 
 | Integrante | Parte del proyecto |
 |---|---|
-| Jhonatan Poblete *pendiente | `login.html`, `css/login.css`, `js/login.js`, `js/utileria.js`, `img/`, README |
+| Poblete Hernández Jhonatan Ivan | `login.html`, `css/login.css`, `js/login.js`, `js/utileria.js`, `img/`, README |
 | Sixto Morales Angel | `index.html`, `css/index.css`, `js/index.js`, iconos de `img/`, README |
 
 🔗 **Sitio en vivo (GitHub Pages):** LINK_PAGES
@@ -273,6 +273,8 @@ function validarCampoPassword(input) {
 
 ![Validaciones del login](img/capturas/03-login-validaciones.png)
 
+![Validaciones del login](img/capturas/032-login-validaciones.png)
+
 ---
 
 ### Paso 2 — Sidebar con botón hamburguesa y submenú (`index.html`, `index.css`, `index.js`)
@@ -442,6 +444,8 @@ function validarCampoControl() {
 3. El nombre y los apellidos se validan con `soloLetras`. La fecha de nacimiento no puede ser futura: el calendario tiene `max` con la fecha de hoy y además se revisa con `calcularEdad`.
 
 ![Validaciones del formulario de alumnos](img/capturas/09-alumno-validaciones.png)
+
+![Validaciones del formulario de alumnos](img/capturas/092-alumno-validaciones.png)
 
 ---
 
