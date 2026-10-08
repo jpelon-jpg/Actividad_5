@@ -1,8 +1,4 @@
-/* =========================================================
-   index.css — Estilos de la pantalla del sistema (index.html)
-   Base: Bootstrap 5.3.3. Colores tomados del logo (verde azulado)
-   y del login (coral) para que ambas pantallas se vean iguales.
-   ========================================================= */
+/* Estilo base */
 
 :root {
   --sidebar-ancho: 250px;
@@ -22,9 +18,7 @@ body {
   min-height: 100vh;
 }
 
-/* ---------- Iconos (archivos SVG de la carpeta img) ----------
-   Se usan con <img> para que se vean también al abrir el archivo
-   directamente (file://). Los SVG son negros y el color se ajusta con filter. */
+/* Iconos (archivos SVG de la carpeta img) Los SVG son negros y el color se ajusta con filter. */
 .icono {
   display: inline-block;
   width: 20px;
@@ -46,7 +40,7 @@ body {
   filter: invert(27%) sepia(85%) saturate(2400%) hue-rotate(340deg) brightness(92%);
 }
 
-/* ---------- Botón principal con los colores del login ---------- */
+/* Boton principal */
 .btn-acento {
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--acento);
@@ -66,9 +60,7 @@ body {
   box-shadow: 0 0 0 .2rem rgba(255, 75, 43, .2);
 }
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
+/* sidebar */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -136,7 +128,7 @@ body {
   font-weight: 600;
 }
 
-/* Flecha del grupo: gira cuando el submenú está abierto */
+/* Flecha del submenuo */
 .icono-flecha {
   margin-left: auto;
   width: 16px;
@@ -154,7 +146,6 @@ body {
   border-top: 1px solid rgba(255, 255, 255, .08);
 }
 
-/* Fondo oscuro detrás del sidebar (solo en pantallas pequeñas) */
 .sidebar-fondo {
   position: fixed;
   inset: 0;
@@ -165,9 +156,7 @@ body {
   transition: opacity .3s, visibility .3s;
 }
 
-/* =========================================================
-   ÁREA PRINCIPAL Y NAVBAR
-   ========================================================= */
+/* area principal y navbar */
 .principal {
   margin-left: var(--sidebar-ancho);
   min-height: 100vh;
@@ -247,9 +236,7 @@ body {
 
 .contenido { padding: 1.75rem 1.5rem 3rem; }
 
-/* =========================================================
-   VISTA INICIO
-   ========================================================= */
+/* vista del inicio */
 .bienvenida {
   background: linear-gradient(120deg, var(--sidebar-fondo), #22677a);
   color: #fff;
@@ -280,9 +267,7 @@ body {
 .tarjeta-numero { font-size: 1.6rem; font-weight: 700; line-height: 1.1; color: #1f2a33; }
 .tarjeta-etiqueta { font-size: .85rem; color: #6b7783; }
 
-/* =========================================================
-   FORMULARIOS Y TABLAS
-   ========================================================= */
+/* formularios y tablas */
 .panel {
   border: 1px solid #e3e7eb;
   border-radius: 12px;
@@ -334,9 +319,7 @@ body {
 }
 .btn-icono .icono { width: 16px; height: 16px; }
 
-/* =========================================================
-   MODAL DE EDAD
-   ========================================================= */
+/* modal de edad */
 .edad-circulo {
   display: inline-flex;
   align-items: center;
@@ -352,11 +335,7 @@ body {
 }
 .edad-circulo.menor { background: linear-gradient(135deg, #f0a202, #f4c430); }
 
-/* =========================================================
-   ABRIR / CERRAR SIDEBAR
-   Escritorio: visible por defecto; la hamburguesa lo oculta.
-   Celular/tablet: oculto por defecto; la hamburguesa lo muestra.
-   ========================================================= */
+
 @media (min-width: 992px) {
   body.sidebar-cerrado .sidebar { transform: translateX(-100%); }
   body.sidebar-cerrado .principal { margin-left: 0; }
